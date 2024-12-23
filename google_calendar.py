@@ -40,7 +40,7 @@ def add(
         else:
             import glob
 
-            secret_file_name = glob.glob("*secret*.json")[0]
+            secret_file_name = glob.glob("secret*.json")[0]
             flow = InstalledAppFlow.from_client_secrets_file(secret_file_name, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
