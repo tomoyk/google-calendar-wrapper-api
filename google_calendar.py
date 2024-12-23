@@ -16,6 +16,7 @@ def dt_to_rfc3339(_dt: datetime) -> str:
 
 def add(
     title: str,
+    body: str,
     begin_date: datetime,
     end_date: datetime,
     cal_id: str | None = os.environ.get("GOOGLE_CALENDAR_ID"),
@@ -51,7 +52,7 @@ def add(
     # Call the Calendar API
     event = {
         "summary": title,
-        "description": "Slack Botから追加",
+        "description": body,
         "start": {
             "dateTime": dt_to_rfc3339(begin_date),
             "timeZone": "Asia/Tokyo",  # 1985-04-12T23:20:50.52Z
@@ -61,7 +62,7 @@ def add(
             "timeZone": "Asia/Tokyo",  # 1985-04-12T23:20:50.52Z
         },
     }
-    assert len(cal_id) > 20, "Invalid cal_id"
+    assert len(cal_id) > 10, "Invalid cal_id"
     result = service.events().insert(calendarId=cal_id, body=event).execute()
     return result.get("htmlLink")
 
@@ -71,6 +72,5 @@ if __name__ == "__main__":
         title="Test schdule",
         begin_date=datetime.now(),
         end_date=datetime.now() + timedelta(days=1),
-        # user_email="user@example.com"
     )
     print(a)
