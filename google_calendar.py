@@ -70,6 +70,7 @@ def add(
 if __name__ == "__main__":
     a = add(
         title="Test schdule",
+        body="Test schedule body",
         begin_date=datetime.now(),
         end_date=datetime.now() + timedelta(days=1),
     )

@@ -1,2 +1,7 @@
-google-api-python-client
-google-auth-oauthlib
+google-api-python-client==2.156.0
+google-auth-oauthlib==1.2.1
+Flask==3.0.3
+flask-httpauth==4.8.0
+gunicorn==22.0.0
+Werkzeug==3.0.3
+ja-timex==0.2.8
