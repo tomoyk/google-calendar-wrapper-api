@@ -35,3 +35,6 @@ curl -XPOST -u koyama:pA55word -H 'Content-Type: application/json' \
 
 https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-service?hl=ja
 
+```
+gcloud run deploy --source . --set-env-vars GOOGLE_CALENDAR_ID=xxx,AUTH_USER=xxx,AUTH_PASSWORD=xxx
+```
