@@ -26,45 +26,43 @@ def add(
     https://developers.google.com/calendar/quickstart/python
     """
     assert cal_id is not None, "Fail to get GOOGLE_CALENDAR_ID"
+    assert len(cal_id) > 10, "Invalid cal_id"
+
     creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists("token.pickle"):
-        with open("token.pickle", "rb") as token:
-            creds = pickle.load(token)
+    if os.path.exists("token.json"):
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            import glob
-
-            secret_file_name = glob.glob("secret*.json")[0]
-            flow = InstalledAppFlow.from_client_secrets_file(secret_file_name, SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(
+                "credentials.json", SCOPES
+            )
             creds = flow.run_local_server(port=0, open_browser=False)
-        # Save the credentials for the next run
-        with open("token.pickle", "wb") as token:
-            pickle.dump(creds, token)
 
-    service = build("calendar", "v3", credentials=creds)
+        with open("token.json", "w") as token:
+            token.write(creds.to_json())
 
-    # Call the Calendar API
-    event = {
-        "summary": title,
-        "description": body,
-        "start": {
-            "dateTime": dt_to_rfc3339(begin_date),
-            "timeZone": "Asia/Tokyo",  # 1985-04-12T23:20:50.52Z
-        },
-        "end": {
-            "dateTime": dt_to_rfc3339(end_date),
-            "timeZone": "Asia/Tokyo",  # 1985-04-12T23:20:50.52Z
-        },
-    }
-    assert len(cal_id) > 10, "Invalid cal_id"
-    result = service.events().insert(calendarId=cal_id, body=event).execute()
-    return result.get("htmlLink")
+    try:
+        service = build("calendar", "v3", credentials=creds)
+        event = {
+            "summary": title,
+            "description": body,
+            "start": {
+                "dateTime": dt_to_rfc3339(begin_date),
+                "timeZone": "Asia/Tokyo",  # 1985-04-12T23:20:50.52Z
+            },
+            "end": {
+                "dateTime": dt_to_rfc3339(end_date),
+                "timeZone": "Asia/Tokyo",  # 1985-04-12T23:20:50.52Z
+            },
+        }
+        result = service.events().insert(calendarId=cal_id, body=event).execute()
+        return result.get("htmlLink")
+    except HttpError as err:
+        return str(err)
+    
 
 
 if __name__ == "__main__":
