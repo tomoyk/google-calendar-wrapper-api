@@ -1,5 +1,12 @@
 # Google Calendar Wrapper API
 
+## About
+
+Google Calendar Wrapper API creates a schedule with natural language in Japanese.
+This script provides RESTful API interface and enables integrations for some tools.
+
+One usecase is to use this with iOS shortcuts.
+
 ## Getting started (local debug)
 
 1. Get access token from Google Cloud console
