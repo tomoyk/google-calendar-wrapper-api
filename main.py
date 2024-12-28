@@ -28,9 +28,14 @@ def get_password(username):
 def create():
     title = request.json["title"]
     body = request.json["body"]
+    if len(title) < 1:
+        return {"result": "failed", "message": "Invalid title length"}, 400
+    if len(body) < 5:
+        return {"result": "failed", "message": "Invalid body length"}, 400
+
     begin, end = parse_text.get_datetime_str(text=body)
     if begin is None or end is None:
-        return {"result": "failed", "message": "Failed to parse datetime"}
+        return {"result": "failed", "message": "Failed to parse datetime"}, 400
 
     url = google_calendar.add(
         title=title,
