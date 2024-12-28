@@ -7,6 +7,12 @@ This script provides RESTful API interface and enables integrations for some too
 
 One usecase is to use this with iOS shortcuts.
 
+<img src="assets/demo.gif" width="400">
+
+<img src="assets/schedule-dtail.jpg" width="400">
+
+The configuration of iOS shortcut is here.
+
 <img src="assets/shortcut1.jpg" width="350"> <img src="assets/shortcut2.jpg" width="350">
 
 ## Getting started (local debug)
