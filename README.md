@@ -7,6 +7,9 @@ This script provides RESTful API interface and enables integrations for some too
 
 One usecase is to use this with iOS shortcuts.
 
+<img src="assets/shortcut1.jpg" width="400">
+<img src="assets/shortcut2.jpg" width="400">
+
 ## Getting started (local debug)
 
 1. Get access token from Google Cloud console
