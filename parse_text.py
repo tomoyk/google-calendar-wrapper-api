@@ -1,12 +1,20 @@
 import datetime
+from datetime import datetime as dt
+from zoneinfo import ZoneInfo
 
 from ja_timex import TimexParser
 import pendulum
 
 from my_logging import *
 
-
+RULES = (
+    ("正午", "午後0時"),
+    ("今日", dt.strftime(dt.now(ZoneInfo("Asia/Tokyo")), "%Y/%m/%d"))
+)
 def get_datetime_str(text: str) -> tuple[datetime, None]:
+    for rule in RULES:
+        text = text.replace(rule[0], rule[1])
+
     now = pendulum.now()
     jst = now.in_timezone("Asia/Tokyo")
     timexes = TimexParser(reference=jst).parse(text)
@@ -14,6 +22,8 @@ def get_datetime_str(text: str) -> tuple[datetime, None]:
     date_tpl = []
     time_tpl = []
     for t in timexes:
+        logger.debug(t)
+
         if t.type == "DATE":
             date_tpl.append(t.to_datetime())
             continue
@@ -41,14 +51,16 @@ def get_datetime_str(text: str) -> tuple[datetime, None]:
     else:
         return None, None
 
-    logger.debug(f"{begin=}, {begin=}")
+    logger.debug(f"{begin=}, {end=}")
     return begin, end
 
 
 if __name__ == "__main__":
-    files = ("input1", "input2")
+    import glob
+    # files = ("input1", "input2", "input3")
+    files = glob.glob("samples/input*")
     for f in files:
-        with open("samples/" + f) as f:
+        with open(f) as f:
             text = f.read()
         print(f)
         get_datetime_str(text=text)
