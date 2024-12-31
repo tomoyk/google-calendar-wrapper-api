@@ -82,3 +82,49 @@ python google_calendar.py
 ```
 AUTH_USER=xxx AUTH_PASSWORD=xxx gunicorn main:app --bind 0.0.0.0:8080
 ```
+
+## Deployment with systemd
+
+1. Add the `gcalapi` user
+
+```
+sudo useradd -s /bin/bash gcalapi
+```
+
+2. Write `.env-vars` on the project root
+
+```
+cat <<EOF > .env-vars
+AUTH_USER=xxx
+AUTH_PASSWORD=xxx
+GOOGLE_CALENDAR_ID=xxx@example.com
+EOF
+```
+
+3. Edit `gcalapi.service`
+
+```
+WorkingDirectory=/path/to
+ExecStart=/path/to/env/bin/gunicorn main:app --bind 127.0.0.1:8080
+EnvironmentFile=/path/to/.env-vars
+```
+
+4. Copy the `gcalapi.service` file
+
+```
+sudo install gcalapi.service /etc/systemd/system/
+```
+
+5. Apply the service
+
+```
+sudo systemctl daemon-reload
+sudo systemctl start gcalapi
+sudo systemctl enable gcalapi
+```
+
+6. Check logs
+
+```
+sudo systemctl status gcalapi
+```
