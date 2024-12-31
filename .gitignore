@@ -2,6 +2,7 @@ secret*.json
 token.pickle
 token.json
 credentials.json
+.env-vars
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

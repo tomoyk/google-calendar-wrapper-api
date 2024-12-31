@@ -1,0 +1,13 @@
+[Unit]
+Description=Google Calendar Wrapper API 
+After=network.target
+
+[Service]
+User=gcalapi
+Group=gcalapi
+WorkingDirectory=/opt/google-calendar-wrapper-api
+ExecStart=./env/bin/gunicorn main:app --bind 127.0.0.1:8080
+EnvironmentFile=/opt/google-calendar-wrapper-api/.env-vars
+
+[Install]
+WantedBy=multi-user.target
