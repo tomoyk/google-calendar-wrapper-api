@@ -128,3 +128,13 @@ sudo systemctl enable gcalapi
 ```
 sudo systemctl status gcalapi
 ```
+
+7. Start NGINX as a proxy
+
+```
+sudo apt install nginx
+sudo ./nginx.conf /etc/nginx/conf.d/
+sudo nginx -t 
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
