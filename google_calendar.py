@@ -2,8 +2,9 @@ import os
 import pickle
 from datetime import datetime, timedelta
 
+
 from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
+from google.oauth2.service_account import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -23,31 +24,14 @@ def add(
     end_date: datetime,
     cal_id: str | None = os.environ.get("GOOGLE_CALENDAR_ID"),
 ) -> str:
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    https://developers.google.com/calendar/quickstart/python
-    """
     assert cal_id is not None, "Fail to get GOOGLE_CALENDAR_ID"
     assert len(cal_id) > 10, "Invalid cal_id"
 
-    creds = None
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                "credentials.json", SCOPES
-            )
-            creds = flow.run_local_server(port=0, open_browser=False)
-
-        with open("token.json", "w") as token:
-            token.write(creds.to_json())
+    credentials = Credentials.from_service_account_file('service-account.json')
+    scoped_credentials = credentials.with_scopes(SCOPES)
 
     try:
-        service = build("calendar", "v3", credentials=creds)
+        service = build("calendar", "v3", credentials=scoped_credentials)
         event = {
             "summary": title,
             "description": body,
@@ -62,6 +46,7 @@ def add(
         }
         result = service.events().insert(calendarId=cal_id, body=event).execute()
         return result.get("htmlLink")
+
     except HttpError as err:
         return str(err)
     

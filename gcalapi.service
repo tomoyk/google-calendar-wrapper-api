@@ -6,7 +6,7 @@ After=network.target
 User=gcalapi
 Group=gcalapi
 WorkingDirectory=/opt/google-calendar-wrapper-api
-ExecStart=./env/bin/gunicorn main:app --bind 127.0.0.1:8080
+ExecStart=/opt/google-calendar-wrapper-api/env/bin/gunicorn main:app --bind 127.0.0.1:8080
 EnvironmentFile=/opt/google-calendar-wrapper-api/.env-vars
 
 [Install]
