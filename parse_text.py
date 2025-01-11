@@ -7,17 +7,18 @@ import pendulum
 
 from my_logging import *
 
-today = dt.now(ZoneInfo("Asia/Tokyo"))
-strf = lambda x: dt.strftime(x, "%Y/%m/%d ")
-RULES = (
-    ("正午", "午後0時"),
-    ("一昨日", strf(today - datetime.timedelta(hours=48))),
-    ("昨日", strf(today - datetime.timedelta(hours=24))),
-    ("今日", strf(today)),
-    ("明日", strf(today + datetime.timedelta(hours=24))),
-    ("明後日", strf(today + datetime.timedelta(hours=48))),
-)
 def get_datetime_str(text: str) -> tuple[datetime, None]:
+    today = dt.now(ZoneInfo("Asia/Tokyo"))
+    strf = lambda x: dt.strftime(x, "%Y/%m/%d ")
+    RULES = (
+        ("正午", "午後0時"),
+        ("一昨日", strf(today - datetime.timedelta(hours=48))),
+        ("昨日", strf(today - datetime.timedelta(hours=24))),
+        ("今日", strf(today)),
+        ("明日", strf(today + datetime.timedelta(hours=24))),
+        ("明後日", strf(today + datetime.timedelta(hours=48))),
+    )
+
     for rule in RULES:
         text = text.replace(rule[0], rule[1])
 
