@@ -35,7 +35,7 @@ def create():
 
     begin, end = parse_text.get_datetime_str(text=body)
     if begin is None or end is None:
-        return {"result": "failed", "message": "Failed to parse datetime"}, 400
+        return {"result": "failed", "message": "Failed to parse datetime"}, 200
 
     url = google_calendar.add(
         title=title,
